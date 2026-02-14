@@ -236,7 +236,7 @@ Alex Milla - [alexmilla.dev](https://alexmilla.dev)
 
 ## Version History
 
-- **v2.0** (February 2026)
+- **v1.0.20260214** (February 2026)
   - Added multilingual support (English/Spanish)
   - Simplified network scanning (direct UNC path support)
   - Improved menu organization
