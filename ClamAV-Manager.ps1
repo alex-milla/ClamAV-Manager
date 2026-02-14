@@ -1,8 +1,8 @@
 # ClamAV-Manager.ps1
 # Centralized ClamAV management script
-# Author: Alex Milla - alexmilla.net
+# Author: Alex Milla - alexmilla.dev
 # Date: February 14, 2026
-# Version: 2.0
+# Version: 1.0.20260214
 
 # ============================================
 # LANGUAGE CONFIGURATION
@@ -969,3 +969,4 @@ if (!(Test-Path $freshclamConf) -or !(Test-Path $clamdConf)) {
 
 # Start main menu
 Show-MainMenu
+
