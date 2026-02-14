@@ -136,7 +136,7 @@ ClamAV Manager supports scanning UNC paths directly:
 ```
 \\192.168.1.100\shared
 \\server.domain.local\data
-\\10.0.0.11\raid\PDFs
+\\192.168.0.100\directory\PDFs
 ```
 
 Simply use option [3] and enter the UNC path when prompted. The script will access the network path using your current Windows credentials.
@@ -232,7 +232,7 @@ This script is provided as-is for managing ClamAV installations. ClamAV itself i
 
 ## Author
 
-Alex Milla - [alexmilla.net](https://alexmilla.net)
+Alex Milla - [alexmilla.dev](https://alexmilla.dev)
 
 ## Version History
 
