@@ -2,7 +2,7 @@
 # Centralized ClamAV management script
 # Author: Alex Milla - alexmilla.dev
 # Date: February 14, 2026
-# Version: 1.1.20261120
+# Version: 1.2.20261120
 
 # ============================================
 # LANGUAGE CONFIGURATION
@@ -57,18 +57,18 @@ $strings = @{
         MenuExit = "Exit"
 
         Menu1 = "Update virus signatures"
-        Menu13 = "Update engine/version (ClamAV)"
-        Menu2 = "View ClamAV configuration"
-        Menu3 = "Quick scan (any directory/UNC)"
-        Menu4 = "Scan user profile"
-        Menu5 = "Start ClamD daemon"
-        Menu6 = "Stop ClamD daemon"
-        Menu7 = "View daemon status"
-        Menu8 = "Daemon-based scan (faster)"
-        Menu9 = "Full system scan (C:\)"
-        Menu10 = "Initialize/repair configuration"
+        Menu2 = "Update engine/version (ClamAV)"
+        Menu3 = "View ClamAV configuration"
+        Menu4 = "Quick scan (any directory/UNC)"
+        Menu5 = "Scan user profile"
+        Menu6 = "Full system scan (C:\)"
+        Menu7 = "Start ClamD daemon"
+        Menu8 = "Stop ClamD daemon"
+        Menu9 = "View daemon status"
+        Menu10 = "Daemon-based scan (faster)"
         Menu11 = "Create custom signature"
         Menu12 = "View logs"
+        Menu13 = "Initialize/repair configuration"
         Menu0 = "Exit"
 
         SelectOption = "Select an option"
@@ -96,7 +96,7 @@ $strings = @{
         # Update
         UpdateTitle = "SIGNATURE UPDATE"
         UpdateNotFound = "freshclam.conf not found"
-        UpdateRunInit = "Run option [10] Initialize configuration first"
+        UpdateRunInit = "Run option [13] Initialize configuration first"
         UpdateStarting = "Starting database update..."
         UpdateNotFoundExe = "freshclam.exe not found"
         UpdateSuccess = "Signatures updated successfully"
@@ -141,7 +141,7 @@ $strings = @{
         DaemonStatusTitle = "DAEMON STATUS"
         DaemonScanTitle = "DAEMON SCAN (FAST)"
         DaemonNotFound = "clamd.conf not found"
-        DaemonRunInit = "Run option [10] Initialize configuration first"
+        DaemonRunInit = "Run option [13] Initialize configuration first"
         DaemonAlreadyRunning = "Daemon is already running (PID:"
         DaemonStarting = "Starting clamd in background..."
         DaemonStarted = "Daemon started successfully (PID:"
@@ -150,7 +150,7 @@ $strings = @{
         DaemonCheckLog = "Check the log:"
         DaemonStopped = "Daemon stopped successfully"
         DaemonNotRunning = "Daemon is not running"
-        DaemonUseOption = "Use option [5] to start the daemon"
+        DaemonUseOption = "Use option [7] to start the daemon"
         DaemonActive = "Status: ACTIVE"
         DaemonInactive = "Status: INACTIVE"
         DaemonDetails = "Details:"
@@ -159,7 +159,7 @@ $strings = @{
         DaemonCPU = "CPU:"
         DaemonStartTime = "Started:"
         DaemonNotActive = "Daemon is not running"
-        DaemonStartFirst = "Start the daemon first with option [5]"
+        DaemonStartFirst = "Start the daemon first with option [7]"
         DaemonScanStarting = "Starting fast RECURSIVE scan via daemon..."
 
         # Custom Signature
@@ -213,8 +213,18 @@ $strings = @{
         EngineConfRestored = "Original configuration files restored"
         EngineDone = "Engine updated to version"
         EngineDoneFail = "The engine was NOT updated (possible file in use)"
-        EngineRestartHint = "If you were using the daemon, start it again with option [5]"
+        EngineRestartHint = "If you were using the daemon, start it again with option [7]"
         EngineVersionUnknown = "Could not determine the installed version"
+
+        # Initial deployment
+        DeployTitle = "INITIAL DEPLOYMENT"
+        DeployAskStart = "Download and deploy the latest official ClamAV now? (Y/N)"
+        DeployTarget = "Deployment target folder:"
+        DeployCheckFailed = "Could not get the latest ClamAV version from GitHub"
+        DeployAssetMiss = "No Windows package found in the latest release"
+        DeployInstalling = "Installing ClamAV in:"
+        DeployCopyFailed = "Error installing ClamAV files"
+        DeployDone = "ClamAV deployed successfully, version"
 
         # Goodbye
         Goodbye = "See you soon!"
@@ -240,18 +250,18 @@ $strings = @{
         MenuExit = "Salir"
 
         Menu1 = "Actualizar base de datos de firmas"
-        Menu13 = "Actualizar motor/versión de ClamAV"
-        Menu2 = "Ver configuración de ClamAV"
-        Menu3 = "Escaneo rápido (cualquier directorio/UNC)"
-        Menu4 = "Escaneo de perfil de usuario"
-        Menu5 = "Iniciar daemon ClamD"
-        Menu6 = "Detener daemon ClamD"
-        Menu7 = "Ver estado del daemon"
-        Menu8 = "Escaneo mediante daemon (más rápido)"
-        Menu9 = "Escaneo completo del sistema (C:\)"
-        Menu10 = "Inicializar/Reparar configuración"
+        Menu2 = "Actualizar motor/versión de ClamAV"
+        Menu3 = "Ver configuración de ClamAV"
+        Menu4 = "Escaneo rápido (cualquier directorio/UNC)"
+        Menu5 = "Escaneo de perfil de usuario"
+        Menu6 = "Escaneo completo del sistema (C:\)"
+        Menu7 = "Iniciar daemon ClamD"
+        Menu8 = "Detener daemon ClamD"
+        Menu9 = "Ver estado del daemon"
+        Menu10 = "Escaneo mediante daemon (más rápido)"
         Menu11 = "Crear firma personalizada"
         Menu12 = "Ver logs"
+        Menu13 = "Inicializar/Reparar configuración"
         Menu0 = "Salir"
 
         SelectOption = "Selecciona una opción"
@@ -279,7 +289,7 @@ $strings = @{
         # Update
         UpdateTitle = "ACTUALIZACIÓN DE FIRMAS"
         UpdateNotFound = "No se encuentra freshclam.conf"
-        UpdateRunInit = "Ejecuta primero la opción [10] Inicializar configuración"
+        UpdateRunInit = "Ejecuta primero la opción [13] Inicializar configuración"
         UpdateStarting = "Iniciando actualización de base de datos..."
         UpdateNotFoundExe = "freshclam.exe no encontrado"
         UpdateSuccess = "Firmas actualizadas correctamente"
@@ -324,7 +334,7 @@ $strings = @{
         DaemonStatusTitle = "ESTADO DEL DAEMON"
         DaemonScanTitle = "ESCANEO CON DAEMON (RÁPIDO)"
         DaemonNotFound = "No se encuentra clamd.conf"
-        DaemonRunInit = "Ejecuta primero la opción [10] Inicializar configuración"
+        DaemonRunInit = "Ejecuta primero la opción [13] Inicializar configuración"
         DaemonAlreadyRunning = "El daemon ya está en ejecución (PID:"
         DaemonStarting = "Iniciando clamd en segundo plano..."
         DaemonStarted = "Daemon iniciado correctamente (PID:"
@@ -333,7 +343,7 @@ $strings = @{
         DaemonCheckLog = "Revisa el log:"
         DaemonStopped = "Daemon detenido correctamente"
         DaemonNotRunning = "El daemon no está en ejecución"
-        DaemonUseOption = "Usa la opción [5] para iniciar el daemon"
+        DaemonUseOption = "Usa la opción [7] para iniciar el daemon"
         DaemonActive = "Estado: ACTIVO"
         DaemonInactive = "Estado: INACTIVO"
         DaemonDetails = "Detalles:"
@@ -342,7 +352,7 @@ $strings = @{
         DaemonCPU = "CPU:"
         DaemonStartTime = "Inicio:"
         DaemonNotActive = "El daemon no está en ejecución"
-        DaemonStartFirst = "Inicia el daemon primero con la opción [5]"
+        DaemonStartFirst = "Inicia el daemon primero con la opción [7]"
         DaemonScanStarting = "Iniciando escaneo RECURSIVO rápido mediante daemon..."
 
         # Custom Signature
@@ -396,8 +406,18 @@ $strings = @{
         EngineConfRestored = "Archivos de configuración originales restaurados"
         EngineDone = "Motor actualizado a la versión"
         EngineDoneFail = "El motor NO se actualizó (posible archivo en uso)"
-        EngineRestartHint = "Si usabas el daemon, inícialo de nuevo con la opción [5]"
+        EngineRestartHint = "Si usabas el daemon, inícialo de nuevo con la opción [7]"
         EngineVersionUnknown = "No se pudo determinar la versión instalada"
+
+        # Initial deployment
+        DeployTitle = "DESPLIEGUE INICIAL"
+        DeployAskStart = "¿Descargar y desplegar ahora la última versión oficial de ClamAV? (S/N)"
+        DeployTarget = "Carpeta de destino del despliegue:"
+        DeployCheckFailed = "No se pudo obtener la última versión de ClamAV desde GitHub"
+        DeployAssetMiss = "No se encontró paquete para Windows en la última versión"
+        DeployInstalling = "Instalando ClamAV en:"
+        DeployCopyFailed = "Error al instalar los archivos de ClamAV"
+        DeployDone = "ClamAV desplegado correctamente, versión"
 
         # Goodbye
         Goodbye = "¡Hasta pronto!"
@@ -414,8 +434,21 @@ function Get-String {
 # AUTOMATIC CONFIGURATION
 # ============================================
 
-# Auto-detect script path
-$CLAMAV_PATH = Split-Path -Parent $MyInvocation.MyCommand.Path
+# Auto-detect script path; prefer a ClamAV subfolder (project layout)
+$MANAGER_ROOT = Split-Path -Parent $MyInvocation.MyCommand.Path
+$CLAMAV_SUBFOLDER = Join-Path $MANAGER_ROOT "ClamAV"
+
+if (Test-Path $CLAMAV_SUBFOLDER) {
+    # Project layout: ClamAV deployed in .\ClamAV\
+    $CLAMAV_PATH = $CLAMAV_SUBFOLDER
+} elseif (Test-Path (Join-Path $MANAGER_ROOT "clamscan.exe")) {
+    # Legacy layout: ClamAV in the same folder as the script
+    $CLAMAV_PATH = $MANAGER_ROOT
+} else {
+    # Fresh start: no deployment yet, target the project subfolder
+    $CLAMAV_PATH = $CLAMAV_SUBFOLDER
+}
+
 $LOG_PATH = Join-Path $CLAMAV_PATH "logs"
 $QUARANTINE_PATH = Join-Path $CLAMAV_PATH "quarantine"
 $SCAN_REPORTS = Join-Path $CLAMAV_PATH "reports"
@@ -481,6 +514,97 @@ function Get-YesNo {
 # ============================================
 # CLAMAV FUNCTIONS
 # ============================================
+
+function Invoke-ClamAVDeploy {
+    $release = $null
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+        $release = Invoke-RestMethod -Uri "https://api.github.com/repos/Cisco-Talos/clamav/releases/latest" -Headers @{ "User-Agent" = "ClamAV-Manager" } -TimeoutSec 30
+    } catch {
+        $release = $null
+    }
+
+    if (!$release) {
+        Show-Message "$(Get-String 'DeployCheckFailed')" -Type Error
+        Show-Message "$(Get-String 'EngineManualHint')" -Type Info
+        return $false
+    }
+
+    # Select the official package for this architecture
+    $archRaw = $env:PROCESSOR_ARCHITEW6432
+    if (!$archRaw) { $archRaw = $env:PROCESSOR_ARCHITECTURE }
+    $archToken = switch ($archRaw) { 'ARM64' { 'arm64' } 'AMD64' { 'x64' } default { 'win32' } }
+
+    $latestVersion = $release.tag_name -replace '^clamav-', ''
+    $asset = $release.assets | Where-Object { $_.name -eq "clamav-$latestVersion.win.$archToken.zip" } | Select-Object -First 1
+
+    if (!$asset) {
+        Show-Message "$(Get-String 'DeployAssetMiss')" -Type Error
+        return $false
+    }
+
+    # Download the official package
+    $deployDir = Join-Path $env:TEMP ("ClamAV-Deploy_" + (Get-Date -Format "yyyyMMdd_HHmmss"))
+    New-Item -ItemType Directory -Path $deployDir -Force | Out-Null
+    $packageFile = Join-Path $deployDir $asset.name
+
+    Show-Message "$(Get-String 'EngineDownloading')" -Type Info
+
+    try {
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $packageFile -UseBasicParsing
+        $ProgressPreference = 'Continue'
+    } catch {
+        $ProgressPreference = 'Continue'
+        Show-Message "$(Get-String 'EngineDownloadFail')" -Type Error
+        return $false
+    }
+
+    Show-Message "$(Get-String 'EngineDownloaded') $packageFile" -Type Success
+
+    # Extract
+    Show-Message "$(Get-String 'EngineExtracting')" -Type Info
+    $extractDir = Join-Path $deployDir "package"
+
+    try {
+        Expand-Archive -Path $packageFile -DestinationPath $extractDir -Force -ErrorAction Stop
+    } catch {
+        Show-Message "$(Get-String 'EngineExtractFail')" -Type Error
+        return $false
+    }
+
+    # The package may be wrapped in a single root folder
+    $extracted = Get-ChildItem -Path $extractDir
+    $packageRoot = $extractDir
+    if ($extracted.Count -eq 1 -and $extracted[0].PSIsContainer) {
+        $packageRoot = $extracted[0].FullName
+    }
+
+    # Create the target folder and copy the package
+    if (!(Test-Path $CLAMAV_PATH)) { New-Item -ItemType Directory -Path $CLAMAV_PATH -Force | Out-Null }
+
+    Show-Message "$(Get-String 'DeployInstalling') $CLAMAV_PATH" -Type Info
+
+    try {
+        Copy-Item (Join-Path $packageRoot "*") $CLAMAV_PATH -Recurse -Force -ErrorAction Stop
+    } catch {
+        Show-Message "$(Get-String 'DeployCopyFailed')" -Type Error
+        return $false
+    }
+
+    # Verify the deployment
+    if (!(Test-Path (Join-Path $CLAMAV_PATH "clamscan.exe"))) {
+        Show-Message "$(Get-String 'DeployCopyFailed')" -Type Error
+        return $false
+    }
+
+    try { $deployedVersion = Get-InstalledEngineVersion } catch { $deployedVersion = $null }
+    Show-Message "`n$(Get-String 'DeployDone') $deployedVersion" -Type Success
+
+    # Clean up the temporary files
+    Remove-Item $deployDir -Recurse -Force -ErrorAction SilentlyContinue
+    return $true
+}
 
 function Initialize-ClamAVConfig {
     Show-Banner
@@ -1129,26 +1253,26 @@ function Show-MainMenu {
         Write-Host ""
         Write-Host " $(Get-String 'MenuSignatures')" -ForegroundColor Yellow
         Write-Host "  [1] $(Get-String 'Menu1')" -ForegroundColor White
-        Write-Host "  [13] $(Get-String 'Menu13')" -ForegroundColor White
         Write-Host "  [2] $(Get-String 'Menu2')" -ForegroundColor White
+        Write-Host "  [3] $(Get-String 'Menu3')" -ForegroundColor White
         Write-Host ""
         Write-Host " $(Get-String 'MenuScanning')" -ForegroundColor Yellow
-        Write-Host "  [3] $(Get-String 'Menu3')" -ForegroundColor White
         Write-Host "  [4] $(Get-String 'Menu4')" -ForegroundColor White
-        Write-Host "  [9] $(Get-String 'Menu9')" -ForegroundColor White
-        Write-Host ""
-        Write-Host " $(Get-String 'MenuDaemon')" -ForegroundColor Yellow
         Write-Host "  [5] $(Get-String 'Menu5')" -ForegroundColor White
         Write-Host "  [6] $(Get-String 'Menu6')" -ForegroundColor White
+        Write-Host ""
+        Write-Host " $(Get-String 'MenuDaemon')" -ForegroundColor Yellow
         Write-Host "  [7] $(Get-String 'Menu7')" -ForegroundColor White
         Write-Host "  [8] $(Get-String 'Menu8')" -ForegroundColor White
+        Write-Host "  [9] $(Get-String 'Menu9')" -ForegroundColor White
+        Write-Host "  [10] $(Get-String 'Menu10')" -ForegroundColor White
         Write-Host ""
         Write-Host " $(Get-String 'MenuAdvanced')" -ForegroundColor Yellow
         Write-Host "  [11] $(Get-String 'Menu11')" -ForegroundColor White
         Write-Host "  [12] $(Get-String 'Menu12')" -ForegroundColor White
         Write-Host ""
         Write-Host " $(Get-String 'MenuConfig')" -ForegroundColor Yellow
-        Write-Host "  [10] $(Get-String 'Menu10')" -ForegroundColor White
+        Write-Host "  [13] $(Get-String 'Menu13')" -ForegroundColor White
         Write-Host ""
         Write-Host "  [0] $(Get-String 'Menu0')" -ForegroundColor White
         Write-Host ""
@@ -1159,18 +1283,18 @@ function Show-MainMenu {
 
         switch ($selection) {
             '1'  { Update-Signatures }
-            '13' { Update-ClamAVEngine }
-            '2'  { Show-Configuration }
-            '3'  { Start-QuickScan }
-            '4'  { Start-UserProfileScan }
-            '5'  { Start-DaemonService }
-            '6'  { Stop-DaemonService }
-            '7'  { Show-DaemonStatus }
-            '8'  { Start-DaemonScan }
-            '9'  { Start-FullSystemScan }
-            '10' { Initialize-ClamAVConfig }
+            '2'  { Update-ClamAVEngine }
+            '3'  { Show-Configuration }
+            '4'  { Start-QuickScan }
+            '5'  { Start-UserProfileScan }
+            '6'  { Start-FullSystemScan }
+            '7'  { Start-DaemonService }
+            '8'  { Stop-DaemonService }
+            '9'  { Show-DaemonStatus }
+            '10' { Start-DaemonScan }
             '11' { Create-CustomSignature }
             '12' { Show-Logs }
+            '13' { Initialize-ClamAVConfig }
             '0'  { 
                 Show-Message "$(Get-String 'Goodbye')" -Type Success
                 Start-Sleep -Seconds 1
@@ -1193,12 +1317,23 @@ $requiredFiles = @("clamscan.exe", "freshclam.exe", "clamd.exe")
 $missingFiles = $requiredFiles | Where-Object { !(Test-Path (Join-Path $CLAMAV_PATH $_)) }
 
 if ($missingFiles.Count -gt 0) {
+    Show-Banner
+    Write-Host "=== $(Get-String 'DeployTitle') ===`n" -ForegroundColor Yellow
     Write-Host "$(Get-String 'ErrorMissing')" -ForegroundColor Red
     Write-Host "$(Get-String 'ErrorFiles'): $($missingFiles -join ', ')" -ForegroundColor Yellow
-    Write-Host "`n$(Get-String 'ErrorEnsureFolder')" -ForegroundColor Yellow
-    Pause-Script
-    exit
+    Write-Host "$(Get-String 'DeployTarget'): $CLAMAV_PATH" -ForegroundColor Gray
+
+    $deploy = Read-Host "`n$(Get-String 'DeployAskStart')"
+
+    if ((Get-YesNo $deploy) -and (Invoke-ClamAVDeploy)) {
+        # ClamAV deployed: fall through to the configuration check
+    } else {
+        Write-Host "`n$(Get-String 'ErrorEnsureFolder')" -ForegroundColor Yellow
+        Pause-Script
+        exit
+    }
 }
+
 
 # Check first run
 $freshclamConf = Join-Path $CLAMAV_PATH "freshclam.conf"
