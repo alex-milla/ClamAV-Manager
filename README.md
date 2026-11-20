@@ -1,253 +1,146 @@
-# ClamAV Manager
+# ClamAV
 
-A PowerShell-based management console for ClamAV on Windows with automated configuration, multilingual support, scanning capabilities, and daemon control.
+<p align="center">
+  <img width="250" height="250" src="https://raw.githubusercontent.com/Cisco-Talos/clamav/main/logo.png" alt='Maeve, the ClamAV mascot'>
+</p>
 
-## Features
+<p align="center">
+  ClamAV® is an open source antivirus engine for detecting trojans, viruses,
+  malware & other malicious threats.
+</p>
 
-- **Multilingual Support**: Choose between English and Spanish on startup
-- **Automated Configuration**: One-click setup of ClamAV configuration files
-- **Signature Management**: Easy virus definition updates via freshclam
-- **Multiple Scan Modes**:
-  - Quick scan (any directory or UNC path)
-  - User profile scan (Desktop, Downloads, Documents)
-  - Full system scan
-  - Daemon-based scanning (faster)
-- **Daemon Control**: Start, stop, and monitor ClamD service
-- **Custom Signatures**: Generate MD5/SHA256 hashes for custom virus definitions
-- **Detailed Logging**: All operations are logged with timestamps
-- **Report Generation**: Comprehensive scan reports in text format
+<p align="center">
+  <a href="https://github.com/Cisco-Talos/clamav/actions"><img src="https://github.com/Cisco-Talos/clamav/workflows/CMake%20Build/badge.svg" height="18"></a>
+  <a href="https://discord.gg/6vNAqWnVgw"><img src="https://img.shields.io/discord/636023333074370595.svg?logo=discord" height="18"/></a>
+  <a href="https://twitter.com/clamav"><img src="https://abs.twimg.com/favicons/twitter.ico" width="18" height="18"></a>
+</p>
 
-## Requirements
+## Documentation & FAQ
 
-- Windows OS
-- ClamAV for Windows installed
-- PowerShell 5.1 or later
+ClamAV documentation is hosted at [docs.clamav.net](https://docs.clamav.net/).
+The source archive for each release also includes a copy of the documentation
+for [offline](docs/html/index.html) reading.
 
-## Installation
+You can contribute to the documentation by submitting improvements to
+[Cisco-Talos/clamav-documentation](https://github.com/Cisco-Talos/clamav-documentation)
 
-1. Download ClamAV for Windows from the [official repository](https://www.clamav.net/downloads)
-2. Extract ClamAV to a directory (e.g., `C:\clamav`)
-3. Place `ClamAV-Manager.ps1` in the ClamAV directory
-4. Unblock the script file:
-   ```powershell
-   Unblock-File -Path "C:\clamav\ClamAV-Manager.ps1"
-   ```
-5. Run PowerShell as Administrator:
-   ```powershell
-   cd C:\clamav
-   .\ClamAV-Manager.ps1
-   ```
+## ClamAV News
 
-## Language Selection
+For information about the features in this and prior releases, read
+[the news](NEWS.md).
 
-On first run, you'll be prompted to select your preferred language:
+Catch up on the latest about ClamAV by reading our
+[blog](http://blog.clamav.net) and follow us on Twitter `@clamav`.
 
-```
-Select Language / Seleccionar Idioma:
+## ClamAV Signatures
 
-  [1] English
-  [2] Español
-```
+Anyone can learn to read and write ClamAV signatures. To get started, see our
+[signature writing manual](https://docs.clamav.net/manual/Signatures.html).
 
-The interface will adapt to your selection, including:
-- All menu options
-- Messages and notifications
-- Error messages
-- Help text
-- Input prompts (Y/N or S/N)
+## Installation Instructions
 
-## First Run
+### Using Docker
 
-On first execution, the script will:
-1. Prompt for language selection (English or Spanish)
-2. Detect if configuration files are missing
-3. Offer to initialize configuration automatically
-4. Create necessary directories (logs, reports, quarantine, database)
-5. Configure `freshclam.conf` and `clamd.conf` with proper paths
+ClamAV can be run using Docker. For details, visit to the online manual under
+["Docker"](https://docs.clamav.net/manual/Installing/Docker.html) and check out
+our images on [Docker Hub](https://hub.docker.com/r/clamav/clamav).
 
-## Usage
+### Using a Package Manager
 
-### Initialize Configuration
-```powershell
-# Select option [10] from the menu
-```
+For help installing from a package manager, refer to the online manual under
+["Packages"](https://docs.clamav.net/manual/Installing/Packages.html).
 
-### Update Virus Definitions
-```powershell
-# Select option [1] from the menu
-```
+### Using an Installer
 
-### Scan a Directory
-```powershell
-# Select option [3] from the menu
-# Enter path: C:\Users\YourName\Downloads
-# Or UNC path: \\server\share\folder
-```
+The following install packages are available for download from
+[clamav.net/downloads](https://www.clamav.net/downloads):
 
-### Start Daemon Mode
-```powershell
-# Select option [5] to start daemon
-# Select option [8] for fast daemon-based scanning
-```
+- Linux - Debian and RPM packages for x86_64 and i686. *New in v0.104.*
+- macOS - PKG installer for x86_64 and arm64 (universal). *New in v0.104.*
+- Windows - MSI installers and portable ZIP packages for win32 and x64.
 
-## Directory Structure
+To learn how to use these packages, refer to the online manual under
+["Installing"](https://docs.clamav.net/manual/Installing.html#installing-with-an-installer).
 
-```
-ClamAV/
-├── ClamAV-Manager.ps1
-├── clamscan.exe
-├── freshclam.exe
-├── clamd.exe
-├── logs/              # freshclam and clamd logs
-├── reports/           # scan reports
-├── quarantine/        # infected files (if move option used)
-└── database/          # virus definitions
-```
+### Build from Source
 
-## Menu Options
+For step-by-step instructions, refer to the online manual:
+- [Unix/Linux/Mac](https://docs.clamav.net/manual/Installing/Installing-from-source-Unix.html)
+- [Windows](https://docs.clamav.net/manual/Installing/Installing-from-source-Windows.html)
 
-| Option | Description |
-|--------|-------------|
-| 1 | Update virus signatures |
-| 2 | View ClamAV configuration |
-| 3 | Quick scan (any directory/UNC) |
-| 4 | Scan user profile |
-| 5 | Start ClamD daemon |
-| 6 | Stop ClamD daemon |
-| 7 | View daemon status |
-| 8 | Daemon-based scan (faster) |
-| 9 | Full system scan (C:\) |
-| 10 | Initialize/repair configuration |
-| 11 | Create custom signature |
-| 12 | View logs |
-| 0 | Exit |
+The source archive for each release includes a copy of the documentation for
+[offline](docs/html/UserManual.html) reading.
 
-## Scan Features
+A reference with all of the available build options can be found in the
+[INSTALL.md](INSTALL.md) file.
 
-All scans are **recursive** by default and include:
-- Real-time progress display
-- Detailed logging to file
-- Summary statistics (files scanned, threats found)
-- Option to open report after completion
+You can find additional advice for developers in the online manual under
+["For Developers"](https://docs.clamav.net/manual/Development.html).
 
-## Network Scanning
+### Upgrading from a previous version
 
-ClamAV Manager supports scanning UNC paths directly:
-```
-\\192.168.1.100\shared
-\\server.domain.local\data
-\\192.168.0.100\directory\PDFs
-```
+Visit [the FAQ](https://docs.clamav.net/faq/faq-upgrade.html) for tips on how
+to upgrade from a previous version.
 
-Simply use option [3] and enter the UNC path when prompted. The script will access the network path using your current Windows credentials.
+## Join the ClamAV Community
 
-## Configuration Files
+The best way to get in touch with the ClamAV community is to join our
+[mailing lists](https://docs.clamav.net/faq/faq-ml.html).
 
-The script automatically configures:
+You can also join the community on our
+[ClamAV Discord chat server](https://discord.gg/6vNAqWnVgw).
 
-**freshclam.conf**
-- Database directory
-- Update log file
-- Mirror servers
+## Want to make a contribution?
 
-**clamd.conf**
-- Database directory
-- Log file
-- TCP socket (port 3310)
-- Maximum threads (12)
-- Directory recursion depth (20)
+The ClamAV development team welcomes
+[code contributions](https://github.com/Cisco-Talos/clamav),
+improvements to
+[our documentation](https://github.com/Cisco-Talos/clamav-documentation),
+and also [bug reports](https://github.com/Cisco-Talos/clamav/issues).
 
-## Logging
+Thanks for joining us!
 
-All operations generate timestamped logs in the `logs/` directory:
-- `freshclam_YYYYMMDD_HHMMSS.log` - Update logs
-- `clamd.log` - Daemon activity log
+## Licensing
 
-Scan reports are saved in the `reports/` directory:
-- `scan_YYYYMMDD_HHMMSS.txt` - Quick scan reports
-- `user_profile_scan_YYYYMMDD_HHMMSS.txt` - User profile scan reports
-- `full_system_scan_YYYYMMDD_HHMMSS.txt` - Full system scan reports
-- `daemon_scan_YYYYMMDD_HHMMSS.txt` - Daemon scan reports
+ClamAV is licensed for public/open source use under the GNU General Public
+License, Version 2 (GPLv2).
 
-## Troubleshooting
+See `COPYING.txt` for a copy of the license.
 
-### Script not running (execution policy error)
+### 3rd Party Code
 
-If you see an error about unsigned scripts:
+ClamAV contains a number of components that include code copied in part or in
+whole from 3rd party projects and whose code is not owned by Cisco and which
+are licensed differently than ClamAV. These include:
 
-```powershell
-# Option 1: Unblock the file
-Unblock-File -Path ".\ClamAV-Manager.ps1"
+- Yara: Apache 2.0 license
+  - Yara has since switched to the BSD 3-Clause License;
+    Our source is out-of-date and needs to be updated.
+- 7z / lzma: public domain
+- libclamav's NSIS/NulSoft parser includes:
+  - zlib: permissive free software license
+  - bzip2 / libbzip2: BSD-like license
+- OpenBSD's libc/regex: BSD license
+- file: BSD license
+- str.c: Contains BSD licensed modified-implementations of strtol(), stroul()
+  functions, Copyright (c) 1990 The Regents of the University of California.
+- pngcheck (png.c): MIT/X11-style license
+- getopt.c: MIT license
+- Curl: license inspired by MIT/X, but not identical
+- libmspack: LGPL license
+- UnRAR (libclamunrar): a non-free/restricted open source license
+  - Note: The UnRAR license is incompatible with GPLv2 because it contains a
+    clause that prohibits reverse engineering a RAR compression algorithm from
+    the UnRAR decompression code.
+    For this reason, libclamunrar/libclamunrar_iface is not linked at all with
+    libclamav. It is instead loaded at run-time. If it fails to load, ClamAV
+    will continue running without RAR support.
 
-# Option 2: Set execution policy (run as Administrator)
-Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+See the `COPYING` directory for a copy of the 3rd party project licenses.
 
-# Option 3: Bypass for single execution
-powershell -ExecutionPolicy Bypass -File ".\ClamAV-Manager.ps1"
-```
+## Acknowledgements
 
-### freshclam fails to update
-- Check internet connectivity
-- Verify `freshclam.conf` exists and is properly configured
-- Run option [10] to reinitialize configuration
+Credit for contributions to each release can be found in the [News](NEWS.md).
 
-### Daemon won't start
-- Verify `clamd.conf` exists
-- Check if port 3310 is available
-- Review `logs/clamd.log` for errors
-- Make sure you're running from the ClamAV directory
-
-### UNC path not accessible
-- Verify network connectivity
-- Ensure you have proper permissions to the network share
-- Check if the path is reachable: `Test-Path "\\server\share"`
-- Try accessing the share in Windows Explorer first
-
-### Language not switching
-- Language is selected on script startup
-- Restart the script to change language
-- Language preference is not persistent between sessions
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit issues or pull requests.
-
-### Adding New Languages
-
-To add a new language, edit the `$strings` hashtable in the script:
-
-```powershell
-$strings = @{
-    en = @{ ... }
-    es = @{ ... }
-    fr = @{ ... }  # Add new language here
-}
-```
-
-Then update the `Select-Language` function to include the new option.
-
-## License
-
-This script is provided as-is for managing ClamAV installations. ClamAV itself is licensed under GPL v2.
-
-## Author
-
-Alex Milla - [alexmilla.dev](https://alexmilla.dev)
-
-## Version History
-
-- **v1.0.20260214** (February 2026)
-  - Added multilingual support (English/Spanish)
-  - Simplified network scanning (direct UNC path support)
-  - Improved menu organization
-  - Enhanced error handling
-  - Better user experience with language-specific prompts
-
-- **v1.x** (Previous versions)
-  - Initial release
-  - Basic ClamAV management features
-
-## Acknowledgments
-
-- ClamAV Team for the excellent open-source antivirus engine
-- Community contributors for testing and feedback
+ClamAV is brought to you by
+[the ClamAV Team](https://www.clamav.net/about.html#credits)
