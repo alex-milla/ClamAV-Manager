@@ -2,7 +2,7 @@
 # Centralized ClamAV management script
 # Author: Alex Milla - alexmilla.dev
 # Date: February 14, 2026
-# Version: 1.0.20260214
+# Version: 1.1.20261120
 
 # ============================================
 # LANGUAGE CONFIGURATION
@@ -57,6 +57,7 @@ $strings = @{
         MenuExit = "Exit"
 
         Menu1 = "Update virus signatures"
+        Menu13 = "Update engine/version (ClamAV)"
         Menu2 = "View ClamAV configuration"
         Menu3 = "Quick scan (any directory/UNC)"
         Menu4 = "Scan user profile"
@@ -187,6 +188,34 @@ $strings = @{
         ErrorNeedInit = "Configuration initialization is required"
         ErrorInitNow = "Do you want to initialize configuration now? (Y/N)"
 
+        # Engine update
+        EngineTitle = "ENGINE VERSION UPDATE"
+        EngineCurrent = "Installed version:"
+        EngineCheckingWeb = "Checking latest published version (GitHub)..."
+        EngineCheckFailed = "Could not check latest version (no connection or GitHub unavailable)"
+        EngineManualHint = "Check manually at: https://www.clamav.net/downloads"
+        EngineLatest = "Latest available version:"
+        EngineUpToDate = "ClamAV is up to date"
+        EngineUpdateAvailable = "A newer version of ClamAV is available!"
+        EngineConfirm = "Download and install now? (Y/N)"
+        EngineSkipped = "Engine update cancelled"
+        EngineAssetMiss = "Could not find the Windows package in the latest release"
+        EngineDownloading = "Downloading package (it may take a few minutes)..."
+        EngineDownloaded = "Downloaded to:"
+        EngineDownloadFail = "Error downloading the package"
+        EngineProcsRunning = "ClamAV processes are running:"
+        EngineStopProcs = "Stop them to update? (Y/N)"
+        EngineStopping = "Stopping ClamAV processes..."
+        EngineExtracting = "Extracting package..."
+        EngineExtractFail = "Error extracting the package"
+        EngineUpdating = "Updating installation in:"
+        EngineCopyFailed = "Error updating installation files"
+        EngineConfRestored = "Original configuration files restored"
+        EngineDone = "Engine updated to version"
+        EngineDoneFail = "The engine was NOT updated (possible file in use)"
+        EngineRestartHint = "If you were using the daemon, start it again with option [5]"
+        EngineVersionUnknown = "Could not determine the installed version"
+
         # Goodbye
         Goodbye = "See you soon!"
     }
@@ -211,6 +240,7 @@ $strings = @{
         MenuExit = "Salir"
 
         Menu1 = "Actualizar base de datos de firmas"
+        Menu13 = "Actualizar motor/versión de ClamAV"
         Menu2 = "Ver configuración de ClamAV"
         Menu3 = "Escaneo rápido (cualquier directorio/UNC)"
         Menu4 = "Escaneo de perfil de usuario"
@@ -340,6 +370,34 @@ $strings = @{
         ErrorFirstRun = "Primera ejecución detectada"
         ErrorNeedInit = "Es necesario inicializar la configuración"
         ErrorInitNow = "¿Deseas inicializar la configuración ahora? (S/N)"
+
+        # Engine update
+        EngineTitle = "ACTUALIZACIÓN DEL MOTOR"
+        EngineCurrent = "Versión instalada:"
+        EngineCheckingWeb = "Comprobando última versión publicada (GitHub)..."
+        EngineCheckFailed = "No se pudo comprobar la última versión (sin conexión o GitHub no disponible)"
+        EngineManualHint = "Comprueba manualmente en: https://www.clamav.net/downloads"
+        EngineLatest = "Última versión disponible:"
+        EngineUpToDate = "ClamAV está actualizado"
+        EngineUpdateAvailable = "¡Hay una versión más reciente de ClamAV disponible!"
+        EngineConfirm = "¿Descargar e instalar ahora? (S/N)"
+        EngineSkipped = "Actualización del motor cancelada"
+        EngineAssetMiss = "No se encontró el paquete de Windows en la última versión"
+        EngineDownloading = "Descargando paquete (puede tardar unos minutos)..."
+        EngineDownloaded = "Descargado en:"
+        EngineDownloadFail = "Error al descargar el paquete"
+        EngineProcsRunning = "Hay procesos de ClamAV en ejecución:"
+        EngineStopProcs = "¿Detenerlos para actualizar? (S/N)"
+        EngineStopping = "Deteniendo procesos de ClamAV..."
+        EngineExtracting = "Extrayendo paquete..."
+        EngineExtractFail = "Error al extraer el paquete"
+        EngineUpdating = "Actualizando la instalación en:"
+        EngineCopyFailed = "Error al actualizar los archivos de la instalación"
+        EngineConfRestored = "Archivos de configuración originales restaurados"
+        EngineDone = "Motor actualizado a la versión"
+        EngineDoneFail = "El motor NO se actualizó (posible archivo en uso)"
+        EngineRestartHint = "Si usabas el daemon, inícialo de nuevo con la opción [5]"
+        EngineVersionUnknown = "No se pudo determinar la versión instalada"
 
         # Goodbye
         Goodbye = "¡Hasta pronto!"
@@ -546,6 +604,195 @@ function Update-Signatures {
         Show-Message "$(Get-String 'UpdateError') $LASTEXITCODE)" -Type Error
         Show-Message "$(Get-String 'UpdateCheckLog') $logFile" -Type Warning
     }
+
+    Pause-Script
+}
+
+function Get-InstalledEngineVersion {
+    $clamscanPath = Join-Path $CLAMAV_PATH "clamscan.exe"
+    if (!(Test-Path $clamscanPath)) {
+        return $null
+    }
+
+    $versionOutput = & $clamscanPath --version 2>$null
+    if ($versionOutput -match 'ClamAV\s+(\d+\.\d+\.\d+)') {
+        return $Matches[1]
+    }
+
+    return $null
+}
+
+function Update-ClamAVEngine {
+    Show-Banner
+    Write-Host "=== $(Get-String 'EngineTitle') ===`n" -ForegroundColor Yellow
+
+    # Current installed engine version
+    $currentVersion = Get-InstalledEngineVersion
+    if (!$currentVersion) {
+        Show-Message "$(Get-String 'EngineVersionUnknown')" -Type Warning
+    } else {
+        Show-Message "$(Get-String 'EngineCurrent') $currentVersion" -Type Info
+    }
+
+    # Latest published version (GitHub)
+    Show-Message "$(Get-String 'EngineCheckingWeb')" -Type Info
+
+    try {
+        [Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
+        $release = Invoke-RestMethod -Uri "https://api.github.com/repos/Cisco-Talos/clamav/releases/latest" -Headers @{ "User-Agent" = "ClamAV-Manager" } -TimeoutSec 30
+    } catch {
+        Show-Message "$(Get-String 'EngineCheckFailed')" -Type Error
+        Show-Message "$(Get-String 'EngineManualHint')" -Type Info
+        Pause-Script
+        return
+    }
+
+    $latestVersion = $release.tag_name -replace '^clamav-', ''
+    Show-Message "$(Get-String 'EngineLatest') $latestVersion" -Type Info
+    Write-Host ""
+
+    # Compare versions
+    $updateNeeded = $true
+    if ($currentVersion) {
+        try {
+            if ([version]$latestVersion -le [version]$currentVersion) { $updateNeeded = $false }
+        } catch { }
+    }
+
+    if (!$updateNeeded) {
+        Show-Message "$(Get-String 'EngineUpToDate')" -Type Success
+        Pause-Script
+        return
+    }
+
+    Show-Message "$(Get-String 'EngineUpdateAvailable')" -Type Warning
+
+    # Detect architecture to select the official package
+    $archRaw = $env:PROCESSOR_ARCHITEW6432
+    if (!$archRaw) { $archRaw = $env:PROCESSOR_ARCHITECTURE }
+    $archToken = switch ($archRaw) { 'ARM64' { 'arm64' } 'AMD64' { 'x64' } default { 'win32' } }
+
+    $asset = $release.assets | Where-Object { $_.name -eq "clamav-$latestVersion.win.$archToken.zip" } | Select-Object -First 1
+
+    if (!$asset) {
+        Show-Message "$(Get-String 'EngineAssetMiss')" -Type Error
+        Show-Message "$(Get-String 'EngineManualHint')" -Type Info
+        Pause-Script
+        return
+    }
+
+    # Running ClamAV processes lock the engine files
+    $procs = Get-Process -Name "clamd","clamscan","clamdscan","freshclam" -ErrorAction SilentlyContinue
+    if ($procs) {
+        Show-Message "$(Get-String 'EngineProcsRunning') $($procs.Name -join ', ')" -Type Warning
+        $stop = Read-Host "$(Get-String 'EngineStopProcs')"
+        if (Get-YesNo $stop) {
+            Show-Message "$(Get-String 'EngineStopping')" -Type Info
+            $procs | Stop-Process -Force
+        } else {
+            Show-Message "$(Get-String 'EngineSkipped')" -Type Info
+            Pause-Script
+            return
+        }
+    }
+
+    $confirm = Read-Host "`n$(Get-String 'EngineConfirm')"
+    if (!(Get-YesNo $confirm)) {
+        Show-Message "$(Get-String 'EngineSkipped')" -Type Info
+        Pause-Script
+        return
+    }
+
+    # Download
+    $updateDir = Join-Path $env:TEMP ("ClamAV-Engine-Update_" + (Get-Date -Format "yyyyMMdd_HHmmss"))
+    New-Item -ItemType Directory -Path $updateDir -Force | Out-Null
+    $packageFile = Join-Path $updateDir $asset.name
+
+    Show-Message "$(Get-String 'EngineDownloading')" -Type Info
+
+    try {
+        $ProgressPreference = 'SilentlyContinue'
+        Invoke-WebRequest -Uri $asset.browser_download_url -OutFile $packageFile -UseBasicParsing
+        $ProgressPreference = 'Continue'
+    } catch {
+        $ProgressPreference = 'Continue'
+        Show-Message "$(Get-String 'EngineDownloadFail')" -Type Error
+        Pause-Script
+        return
+    }
+
+    Show-Message "$(Get-String 'EngineDownloaded') $packageFile" -Type Success
+
+    # Extract
+    Show-Message "$(Get-String 'EngineExtracting')" -Type Info
+    $extractDir = Join-Path $updateDir "package"
+
+    try {
+        Expand-Archive -Path $packageFile -DestinationPath $extractDir -Force -ErrorAction Stop
+    } catch {
+        Show-Message "$(Get-String 'EngineExtractFail')" -Type Error
+        Show-Message "$(Get-String 'EngineDownloaded') $updateDir" -Type Info
+        Pause-Script
+        return
+    }
+
+    # The package may be wrapped in a single root folder
+    $extracted = Get-ChildItem -Path $extractDir
+    $packageRoot = $extractDir
+    if ($extracted.Count -eq 1 -and $extracted[0].PSIsContainer) {
+        $packageRoot = $extracted[0].FullName
+    }
+
+    # Backup configuration files: the update must not overwrite them
+    $preserve = @("freshclam.conf", "clamd.conf")
+    $backupDir = Join-Path $updateDir "conf_backup"
+    New-Item -ItemType Directory -Path $backupDir -Force | Out-Null
+
+    foreach ($conf in $preserve) {
+        $confPath = Join-Path $CLAMAV_PATH $conf
+        if (Test-Path $confPath) {
+            Copy-Item -Path $confPath -Destination (Join-Path $backupDir $conf) -Force
+        }
+    }
+
+    # Apply the package over the existing installation
+    Show-Message "$(Get-String 'EngineUpdating') $CLAMAV_PATH" -Type Info
+
+    $copyOK = $true
+    try {
+        Copy-Item (Join-Path $packageRoot "*") $CLAMAV_PATH -Recurse -Force -ErrorAction Stop
+    } catch {
+        $copyOK = $false
+        Show-Message "$(Get-String 'EngineCopyFailed')" -Type Error
+    }
+
+    # Configuration files are always restored
+    foreach ($conf in $preserve) {
+        $backupFile = Join-Path $backupDir $conf
+        if (Test-Path $backupFile) {
+            Copy-Item -Path $backupFile -Destination (Join-Path $CLAMAV_PATH $conf) -Force
+        }
+    }
+
+    if (!$copyOK) {
+        Show-Message "$(Get-String 'EngineConfRestored')" -Type Info
+        Show-Message "$(Get-String 'EngineDownloaded') $updateDir" -Type Info
+        Pause-Script
+        return
+    }
+
+    # Verify the new engine version
+    $newVersion = Get-InstalledEngineVersion
+
+    if ($newVersion -eq $latestVersion) {
+        Show-Message "`n$(Get-String 'EngineDone') $newVersion" -Type Success
+        Remove-Item $updateDir -Recurse -Force -ErrorAction SilentlyContinue
+    } else {
+        Show-Message "`n$(Get-String 'EngineDoneFail')" -Type Warning
+        Show-Message "$(Get-String 'EngineDownloaded') $updateDir" -Type Info
+    }
+
+    Show-Message "$(Get-String 'EngineRestartHint')" -Type Info
 
     Pause-Script
 }
@@ -882,6 +1129,7 @@ function Show-MainMenu {
         Write-Host ""
         Write-Host " $(Get-String 'MenuSignatures')" -ForegroundColor Yellow
         Write-Host "  [1] $(Get-String 'Menu1')" -ForegroundColor White
+        Write-Host "  [13] $(Get-String 'Menu13')" -ForegroundColor White
         Write-Host "  [2] $(Get-String 'Menu2')" -ForegroundColor White
         Write-Host ""
         Write-Host " $(Get-String 'MenuScanning')" -ForegroundColor Yellow
@@ -911,6 +1159,7 @@ function Show-MainMenu {
 
         switch ($selection) {
             '1'  { Update-Signatures }
+            '13' { Update-ClamAVEngine }
             '2'  { Show-Configuration }
             '3'  { Start-QuickScan }
             '4'  { Start-UserProfileScan }
@@ -969,4 +1218,3 @@ if (!(Test-Path $freshclamConf) -or !(Test-Path $clamdConf)) {
 
 # Start main menu
 Show-MainMenu
-
